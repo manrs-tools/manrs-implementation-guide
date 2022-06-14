@@ -75,11 +75,11 @@ Additional information is also welcome and encouraged, such as documenting of ro
 
 The following is a list of these common places along with recommendations on which information should be maintained and how it can be presented. At the minimum, a network operator should register and maintain 24/7 contact information in at least one of these resources.
 
-## Maintaining Contact Information in Regional Internet Registries (RIRs): AFRINIC, APNIC, RIPE
+## Maintaining Contact Information in Regional Internet Registries (RIRs): AFRINIC, APNIC, ARIN, LACNIC, RIPE 
 
 While all of the RIRs require their registrants to keep their primary contact information up-to- date, the RIRs also offer the capability to add additional contacts and contact information to records in their databases. Operators are encouraged to add/maintain the NOC contact information where they have RIR objects. Operators are also encouraged to make use of the ‘remarks’ field (where applicable) to further aid users in making contact information or other useful information easy to obtain.
 
-AFRINIC, APNIC and RIPE maintain a whois system that combines Internet resource registration with their own Internet Route Registry. For objects in these databases, operators should create/maintain a NOC role object and include that object in the “tech-c” attribute of AUT-NUM, INETNUM, INET6NUM, AS-SET, and ROUTE-SET objects. The use of the ‘remarks’ attribute also allows for the documentation of contact information, and can be added to the above object types and also to ROUTE and ROUTE6 objects (discussed later).
+All RIRs maintain a whois system that combines Internet resource registration with their own Internet Route Registry. For objects in these databases, operators should create/maintain a NOC role object and include that object in the “tech-c” attribute of AUT-NUM, INETNUM, INET6NUM, AS-SET, and ROUTE-SET objects. The use of the ‘remarks’ attribute also allows for the documentation of contact information, and can be added to the above object types and also to ROUTE and ROUTE6 objects (discussed later).
 
 ### MNTNER objects
 
@@ -666,6 +666,11 @@ Each RIR is different, but common requirements for obtaining a certificate inclu
 - valid membership with the RIR;
 - access to the resource management portal;
 - agreement with the Terms and conditions of the service.
+
+
+#### RIR Delegated Resource Certification service
+
+Currently ARIN, APNIC, LACNIC and RIPE offer RPKI in "delegated" mode.  With delegated RPKI, you can run your own RPKI Certification Authority, manage your ROAs and publish them in your own repository. It also allows you to further delegate Certification Authorities.
 
 #### RIR portal
 
@@ -1386,7 +1391,7 @@ RPKI works with trust anchors that are the starting points for verifying ROAs. A
 
 ### Relying Party Caches / Validators
 
-<img src="media/image9.png" style="width:6.72222in;height:2.90972in" alt="Graphical user interface Description automatically generated" />
+<img src="media/image10.png" style="width:6.72222in;height:2.90972in" alt="Graphical user interface Description automatically generated" />
 
 All RPKI objects (e.g. ROAs) are scattered as files in distributed repositories. These repositories make RPKI data available to RPs which periodically gather all authoritative data and maintain a complete view (by using *rsync* or *rrdp* for data retrieval). They then cryptographically validate the RPKI objects received, cache the result and relay as a valid prefix/origin AS bindings to routers for use in the validation process. The RPKI validators are usually based upon open source software. At the time of this writing, the best known and most used are the following:
 
@@ -1396,27 +1401,9 @@ All RPKI objects (e.g. ROAs) are scattered as files in distributed repositories.
 - OctoRPKI ([https://github.com/cloudflare/cfrpki](https://github.com/cloudflare/cfrpki))
 - rpki.net rcynic ([https://github.com/dragonresearch/rpki.net](https://github.com/dragonresearch/rpki.net))
 
-#### Using the Dragon Research Labs RPKI Toolkit**
-
-The easiest way to use the RPKI Toolkit is to run it on Ubuntu Xenial or Debian Jessie using the provided APT repositories<sup>5</sup>. 
-
-Install the Relying Party (Validator) software with:
-
-```
-apt install rpki-rp
-```
-
-This will install all the dependencies and install a cron-job to update the local cache every hour. Statistics are written as HTML files to /var/www/rcynic, which can usually be accessed through the web server as http://&lt;hostname&gt;/rcynic/:
-
-<img src="media/image10.jpg" style="width:6.46267in;height:5.10937in" />
-
-The rpki-rp package also provides an RPKI-to-Router interface through xinetd on port 323. See below on how to make a router use this service.
-
 ### Connecting a router to the RPKI-to-Router interface
 
-The RIPE NCC website<sup>6</sup> provides extensive examples on how to configure routers to use an RPKI validator. The following basic examples are based on their documentation.
-
-<sup>5</sup> https://download.rpki.net/APTng/
+The RIPE NCC website<sup>5</sup> provides extensive examples on how to configure routers to use an RPKI validator. The following basic examples are based on their documentation.
 
 #### Juniper Networks JunOS
 
@@ -1494,7 +1481,7 @@ protocols {
 }
 ```
 
-<sup>6</sup>
+<sup>5</sup>
 [https://www.ripe.net/manage-ips-and-asns/resource-management/certification/router-configuration](http://www.ripe.net/manage-ips-and-asns/resource-management/certification/router-configuration)
 
 You can use the commands under show validation to check the sessions to the validator, the received data etc:
